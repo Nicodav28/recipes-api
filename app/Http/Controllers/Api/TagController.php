@@ -13,8 +13,23 @@ class TagController extends Controller
         return Tag::with('recipes')->get();
     }
 
+    public function store(Request $request)
+    {
+        //
+    }
+
     public function show(Tag $tag)
     {
         return $tag->load('recipes');
+    }
+
+    public function update(Request $request)
+    {
+        //
+    }
+
+    public function destroy(Tag $recipe)
+    {
+        //
     }
 }

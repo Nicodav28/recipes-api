@@ -13,8 +13,24 @@ class CategoryController extends Controller
         return Category::all();
     }
 
+    public function store(Request $request)
+    {
+        //
+    }
+
+
     public function show(Category $category)
     {
         return $category->load('recipes');
+    }
+
+    public function update(Request $request)
+    {
+        //
+    }
+
+    public function destroy(Category $recipe)
+    {
+        //
     }
 }
