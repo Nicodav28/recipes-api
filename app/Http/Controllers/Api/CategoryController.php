@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        return CategoryResource::collection(Category::with('recipes.category', 'recipes.tags', 'recipes.user')->get());
     }
 
     public function store(Request $request)
@@ -23,7 +23,7 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        $category = $category->load('recipes');
+        $category = $category->load('recipes.category', 'recipes.tags', 'recipes.user');
         return new CategoryResource($category);
     }
 
