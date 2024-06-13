@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\RecipeResource;
+
 class RecipeController extends Controller
 {
     public function index()
     {
-        return Recipe::with('category', 'tags', 'user')->get();
+        return RecipeResource::collection(Recipe::with('category', 'tags', 'user')->get());
     }
 
     public function store(Request $request)
@@ -20,7 +22,9 @@ class RecipeController extends Controller
 
     public function show(Recipe $recipe)
     {
-        return $recipe->load('category', 'tags', 'user');
+        $recipe = $recipe->load('category', 'tags', 'user');
+
+        return new RecipeResource($recipe);
     }
 
     public function update(Request $request)
