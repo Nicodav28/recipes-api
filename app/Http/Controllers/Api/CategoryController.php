@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\CategoryResource;
+
 class CategoryController extends Controller
 {
     public function index()
     {
-        return Category::all();
+        return CategoryResource::collection(Category::all());
     }
 
     public function store(Request $request)
@@ -21,7 +23,8 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        return $category->load('recipes');
+        $category = $category->load('recipes');
+        return new CategoryResource($category);
     }
 
     public function update(Request $request)
