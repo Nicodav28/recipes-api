@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Recipe;
-use Illuminate\Http\Request;
 
 use App\Http\Resources\RecipeResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreRecipeRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RecipeController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         return RecipeResource::collection(Recipe::with('category', 'tags', 'user')->get());
@@ -34,6 +36,7 @@ class RecipeController extends Controller
 
     public function update(StoreRecipeRequest $request, Recipe $recipe)
     {
+        $this->authorize('update', $recipe);
         $recipe->update($request->all());
         $tags = json_decode($request->tags);
 
