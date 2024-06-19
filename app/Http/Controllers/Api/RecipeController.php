@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Resources\RecipeResource;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\StoreRecipeRequest;
 
 class RecipeController extends Controller
 {
@@ -16,14 +17,10 @@ class RecipeController extends Controller
         return RecipeResource::collection(Recipe::with('category', 'tags', 'user')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreRecipeRequest $request)
     {
         $recipe = Recipe::create($request->all());
-        $tags = json_decode($request->tags);
-
-        if ($tags) {
-            $recipe->tags()->attach($tags);
-        }
+        $recipe->tags()->attach(json_decode($request->tags));
 
         return response()->json(new RecipeResource($recipe), Response::HTTP_CREATED);
     }
@@ -35,7 +32,7 @@ class RecipeController extends Controller
         return new RecipeResource($recipe);
     }
 
-    public function update(Request $request, Recipe $recipe)
+    public function update(StoreRecipeRequest $request, Recipe $recipe)
     {
         $recipe->update($request->all());
         $tags = json_decode($request->tags);
